@@ -19,28 +19,32 @@ cacheSolve <- function(x, ...) {
 ## containing functions to set the value of the  matrix, get the value of the matrix,
 ## set the inverse and get the inverse
 makeCacheMatrix <- function(x = matrix()) { # declare function. x is an invertible matrix
-    m <- NULL                               # sets default value of cached inverse
+    cachedInv <- NULL                       # sets default value of cached inverse
     set <- function(y) {                    # declare function to set matrix, y is an input matrix 
         x <<- y                             # set x to be in the environment of matrix y
-        m <<- NULL                          # reset the cached invert of x to NULL
+        cachedInv <<- NULL                  # reset the cached invert of x to NULL
     }                                
-    get <- function() x                     #          
-    setInv <- function(solve) m <<- solve   #    
-    getInv <- function() m                  # 
-    list(set = set, get = get,              # 
-         setInv = setInv,                   # 
-         getInv = getInv)                   # 
-}                                           # 
-#j <- matrix(c(1,0,1,2,4,0,3,5,7),3,3)        
+    get <- function() x                     # declare get function, takes input of matrix x         
+    setInv <- function(solve){              # declare setInv function, solve is inert of matrix
+        cachedInv <<- solve                 # store the invert 
+    }
+    getInv <- function() cachedInv          # retrieves the invert
+    list(set = set, get = get,              # return value of this function
+         setInv = setInv,                   # is a list of 4 functions
+         getInv = getInv)                   # with labels identical to the function names
+}
+# example use of these funcions:
+# j <- matrix(c(1,0,1,2,4,0,3,5,7),3,3)
 
-cacheSolve <- function(x, ...) {            # 
-    m <- x$getInv()                         # attempts to retrieve a cached value
-    if(!is.null(m)) {                       # if a value IS cached..
+
+cacheSolve <- function(x, ...) {            # declare function cacheSolve with input matrix x
+    cachedInv <- x$getInv()                 # attempts to retrieve a cached value
+    if(!is.null(cachedInv)) {               # If a value IS cached then
         message("Getting cached inverse")   # notify user and
-        return(m)                           # stops function here, returning the cached value
+        return(cachedInv)                   # return the cached value
     }                                       # if nothing is cached then code continues..
-    data <- x$get()                         # retrieves the input matrix
-    m <- solve(data, ...)                   # Applies solve function to calculate inverse
-    x$setInv(m)                             # caches the inverse for future use.
-    m                                       # returns the inverse as final function value
+    unsolvedMatrix <- x$get()               # retrieves the input matrix
+    cachedInv <- solve(unsolvedMatrix)      # Applies solve function to calculate inverse
+    x$setInv(cachedInv)                     # caches the inverse for future use.
+    cachedInv                               # returns the inverse as final function value
 }
