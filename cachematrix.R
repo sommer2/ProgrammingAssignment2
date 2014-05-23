@@ -20,7 +20,7 @@ makeCacheMatrix <- function(x = matrix()) { ## declare function. x is an inverti
          getInv = getInv)                   ## with labels identical to the function names
 }
 
-## This function takes an input of invertible matrix x,
+## Function cacheSolve takes an input of invertible matrix x,
 ## attempts to retrieve its cached inverse and if none  is found,
 ## it will compute and cache the inverse matrix
 cacheSolve <- function(x, ...) {            ## declare function cacheSolve with input matrix x
