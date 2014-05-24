@@ -7,12 +7,12 @@
 makeCacheMatrix <- function(x = matrix()) { ## declare function. x is an invertible matrix
     cachedInv <- NULL                       ## sets default value of cached inverse to NULL
     set <- function(y) {                    ## declare function to set matrix, y is an invertible matrix 
-        x <<- y                             ## set x to be in the environment of matrix y
+        x <<- y                             ## sets parent environment of x to be the set function
         cachedInv <<- NULL                  ## reset the cached invert of x to NULL
     }                                
-    get <- function() x                     ## declare get function, returns matrix x         
+    get <- function() x                     ## declare get function, takes input of matrix x         
     setInv <- function(solve){              ## declare setInv function, solve is the invert of matrix x
-        cachedInv <<- solve                 ## store the invert 
+        cachedInv <<- solve                 ## store the invert in parent environment of setInv
     }
     getInv <- function() cachedInv          ## retrieves the invert of x
     list(set = set, get = get,              ## return value of this function
